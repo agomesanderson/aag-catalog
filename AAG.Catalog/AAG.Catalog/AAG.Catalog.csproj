@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.1.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+	<PackageReference Include="Flunt" Version="2.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AAG.Catalog.Domain\AAG.Catalog.Domain.csproj" />
+    <ProjectReference Include="..\AAG.Catalog.Infra.CrossCuttings\AAG.Catalog.Infra.CrossCuttings.csproj" />
+    <ProjectReference Include="..\AAG.Catalog.Ioc\AAG.Catalog.Ioc.csproj" />
+  </ItemGroup>
+
+</Project>
