@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AAG.Catalog.Controllers.Domain;
 
+/// <summary>
+/// Categoria
+/// </summary>
 [ApiVersion("1.0")]
 [Route("category")]
 public class CategoryController : MainController
@@ -16,6 +19,11 @@ public class CategoryController : MainController
     private readonly CategoryHandler _categoryHandler;
     private readonly ICategoryRepository _categoryRepository;
 
+    /// <summary>
+    /// Categoria
+    /// </summary>
+    /// <param name="categoryHandler"></param>
+    /// <param name="categoryRepository"></param>
     public CategoryController(CategoryHandler categoryHandler, ICategoryRepository categoryRepository)
     {
         _categoryHandler = categoryHandler;
@@ -25,8 +33,10 @@ public class CategoryController : MainController
     /// <summary>
     /// Consulta uma categoria
     /// </summary>
-    /// <param name="id"></param>
+    /// <param name="id">Id da categoria</param>
     /// <returns>Retorna o objeto da categoria</returns>
+    /// <response code="200">Sucess response</response>
+    /// <response code="404">Not found response</response>
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(SuccessCommandResult<CategoryQueryResult>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(FailureCommandResult), StatusCodes.Status404NotFound)]
@@ -44,6 +54,8 @@ public class CategoryController : MainController
     /// Consulta todas as categorias
     /// </summary>
     /// <returns>Lista de objetod das categorias</returns>
+    /// <response code="200">Sucess response</response>
+    /// <response code="404">Not found response</response>
     [HttpGet("all")]
     [ProducesResponseType(typeof(SuccessCommandResult<List<CategoryQueryResult>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(FailureCommandResult), StatusCodes.Status404NotFound)]
@@ -60,8 +72,19 @@ public class CategoryController : MainController
     /// <summary>
     /// Cria uma categoria
     /// </summary>
-    /// <param name="command"></param>
+    /// <remarks>
+    /// Sample request:
+    ///
+    ///     POST 
+    ///     {
+    ///        "Name":"string"
+    ///     }
+    ///
+    /// </remarks>
+    /// <param name="command">Objeto para criação da categoria</param>
     /// <returns>Id da categoria criado</returns>
+    /// <response code="201">Created response</response>
+    /// <response code="422">validation error</response>
     [HttpPost]
     [ProducesResponseType(typeof(SuccessCommandResult<CategoryCommandResult>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(FailureCommandResult), StatusCodes.Status422UnprocessableEntity)]
@@ -74,9 +97,20 @@ public class CategoryController : MainController
     /// <summary>
     /// Atualiza uma categoria
     /// </summary>
-    /// <param name="command"></param>
-    /// <param name="id"></param>
+    /// <remarks>
+    /// Sample request:
+    ///
+    ///     POST 
+    ///     {
+    ///        "Name":"string"
+    ///     }
+    ///
+    /// </remarks>
+    /// <param name="command">Objeto para atualizar categoria</param>
+    /// <param name="id">Id da categoria</param>
     /// <returns></returns>
+    /// <response code="204">No content response</response>
+    /// <response code="422">validation error</response>
     [HttpPut("{id}")]
     [ProducesResponseType(typeof(SuccessCommandResult<CategoryCommandResult>), StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(FailureCommandResult), StatusCodes.Status422UnprocessableEntity)]
@@ -89,8 +123,10 @@ public class CategoryController : MainController
     /// <summary>
     /// Remove uma categoria
     /// </summary>
-    /// <param name="id"></param>
+    /// <param name="id">Id da categoria</param>
     /// <returns></returns>
+    /// <response code="204">No content response</response>
+    /// <response code="422">validation error</response>
     [HttpDelete("{id}")]
     [ProducesResponseType(typeof(SuccessCommandResult<CategoryCommandResult>), StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(FailureCommandResult), StatusCodes.Status422UnprocessableEntity)]
