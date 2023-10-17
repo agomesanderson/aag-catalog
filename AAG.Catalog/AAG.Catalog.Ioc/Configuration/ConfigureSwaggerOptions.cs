@@ -25,9 +25,9 @@ public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
     {
         var info = new OpenApiInfo()
         {
-            Title = "Eclipseworks - OfferCounter",
+            Title = "AAG.Catalog",
             Version = description.ApiVersion.ToString(),
-            Description = "API provedor de serviço OfferCounter",
+            Description = "API provedor de serviço AAG.Catalog",
         };
 
         if (description.IsDeprecated)

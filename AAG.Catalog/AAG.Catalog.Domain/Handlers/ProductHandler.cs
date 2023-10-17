@@ -1,8 +1,14 @@
-﻿using AAG.Catalog.Domain.Commands.Input.Products;
-using AAG.Catalog.Domain.Commands.Output;
+﻿using AAG.Catalog.Domain.Commands.Input.Categories.Validation;
+using AAG.Catalog.Domain.Commands.Input.Products;
+using AAG.Catalog.Domain.Commands.Input.Products.Validation;
+using AAG.Catalog.Domain.Commands.Output.Base;
+using AAG.Catalog.Domain.Commands.Output.Categories;
+using AAG.Catalog.Domain.Commands.Output.Products;
 using AAG.Catalog.Domain.Entities;
 using AAG.Catalog.Domain.Repositories;
+using AAG.Catalog.Infra.Common;
 using AAG.Catalog.Infra.Common.Contracts;
+using FluentValidation;
 
 namespace AAG.Catalog.Domain.Handlers;
 
@@ -17,64 +23,72 @@ public class ProductHandler
         _productRepository = productRepository;
     }
 
-    public async Task<ICommandResult> Handle(CreateProductCommand command)
+    public async Task<GenericCommandResult<ProductCommandResult>> Handle(CreateProductCommand command)
     {
-        command.Validate();
+        var validator = new CreateProductCommandValidation();
+        var validationResult = validator.Validate(command);
 
-        if (!command.IsValid)
-            return new GenericCommandResult(false, "Produto inválida", command.Notifications);
+        if (!validationResult.IsValid)
+        {
+            var errors = validationResult.Errors.Select(e => new ErrorItem(e.ErrorCode, e.ErrorMessage));
+            return new FailureCommandResult<ProductCommandResult>("Produto inválido", errors);
+        }
 
         var foundCategory = await _categoryRepository.Get(command.CategoryId);
 
         if (foundCategory is null)
-            return new GenericCommandResult(false, "Cagoria não localizada", null!);
+            return new FailureCommandResult<ProductCommandResult>("Cagoria não localizada");
 
         var product = Product.Create(command);
 
         await _productRepository.Insert(product);
-
-        return new GenericCommandResult(true, "Produto criado com sucesso", new { Id = product.Id });
+        
+        return new SuccessCommandResult<ProductCommandResult>(new ProductCommandResult { Id = product.Id }, "Produto criado com sucesso", 201);
     }
 
-    public async Task<ICommandResult> Handle(UpdateProductCommand command, string id)
+    public async Task<GenericCommandResult<ProductCommandResult>> Handle(UpdateProductCommand command, string id)
     {
-        command.Validate();
+        var validator = new UpdateProductCommandValidation();
+        var validationResult = validator.Validate(command);
 
-        if (!command.IsValid)
-            return new GenericCommandResult(false, "Produto inválida", command.Notifications);
+        if (!validationResult.IsValid)
+        {
+            var errors = validationResult.Errors.Select(e => new ErrorItem(e.ErrorCode, e.ErrorMessage));
+            return new FailureCommandResult<ProductCommandResult>("Produto inválido", errors);
+        }
 
         if (id is null)
-            return new GenericCommandResult(false, "Produto inválida", null!);
+            return new FailureCommandResult<ProductCommandResult>("Produto inválida");
 
         var foundCategory = await _categoryRepository.Get(command.CategoryId);
 
         if (foundCategory is null)
-            return new GenericCommandResult(false, "Cagoria não localizada", null!);
+            return new FailureCommandResult<ProductCommandResult>("Cagoria não localizada");
 
         var foundProduct = await _productRepository.Get(id);
 
         if (foundProduct is null)
-            return new GenericCommandResult(false, "Cagoria não localizada", null!);
+            return new FailureCommandResult<ProductCommandResult>("Cagoria não localizada");
 
         var product = Product.Update(command, id);
 
         await _productRepository.Update(product);
 
-        return new GenericCommandResult(true, "Produto alterado com sucesso", new { Id = product.Id });
+        return new SuccessCommandResult<ProductCommandResult>(new ProductCommandResult { Id = product.Id }, "Produto alterado com sucesso", 204);
     }
 
-    public async Task<ICommandResult> Handle(string id)
+    public async Task<GenericCommandResult> Handle(string id)
     {
         if (id is null)
-            return new GenericCommandResult(false, "Produto inválida", null!);
+            return new FailureCommandResult<CategoryCommandResult>("Produto inválida");
 
         var foundProduct = await _productRepository.Get(id);
 
         if (foundProduct is null)
-            return new GenericCommandResult(false, "Produto não localizada", null!);
+            return new FailureCommandResult<CategoryCommandResult>("Produto não localizado");
 
         await _productRepository.Delete(id);
-
-        return new GenericCommandResult(true, "Produto removido com sucesso", null!);
+        
+        return new SuccessCommandResult("Produto removido com sucesso", 204);
     }
 }
