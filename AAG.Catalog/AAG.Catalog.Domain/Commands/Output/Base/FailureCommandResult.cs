@@ -1,10 +1,11 @@
 ﻿using AAG.Catalog.Infra.Common;
-using System.Text.Json.Serialization;
 
 namespace AAG.Catalog.Domain.Commands.Output.Base;
 
 public class FailureCommandResult : GenericCommandResult
 {
+    public IEnumerable<ErrorItem>? Errors { get; set; }
+
     public FailureCommandResult()
     {
         Success = false;
@@ -25,9 +26,9 @@ public class FailureCommandResult : GenericCommandResult
         StatusCode = statusCode;
 
         Errors = new List<ErrorItem>
-            {
-                error
-            };
+        {
+            error
+        };
     }
 
     public FailureCommandResult(string message, int statusCode = 422)
@@ -41,7 +42,7 @@ public class FailureCommandResult : GenericCommandResult
 
 public class FailureCommandResult<TData> : GenericCommandResult<TData>
 {
-    [JsonIgnore] public new TData? Data { get; set; }
+    public IEnumerable<ErrorItem>? Errors { get; set; }
 
     public FailureCommandResult()
     {
@@ -63,9 +64,9 @@ public class FailureCommandResult<TData> : GenericCommandResult<TData>
         StatusCode = statusCode;
 
         Errors = new List<ErrorItem>
-            {
-                error
-            };
+        {
+            error
+        };
     }
 
     public FailureCommandResult(string message, int statusCode = 422)

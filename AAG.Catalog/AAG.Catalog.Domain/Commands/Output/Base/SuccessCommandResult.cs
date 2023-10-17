@@ -1,12 +1,9 @@
 ﻿using AAG.Catalog.Infra.Common;
-using System.Text.Json.Serialization;
 
 namespace AAG.Catalog.Domain.Commands.Output.Base;
 
 public class SuccessCommandResult : GenericCommandResult
 {
-    [JsonIgnore] public new IEnumerable<ErrorItem>? Errors { get; set; }
-
     public SuccessCommandResult(int statusCode = 200)
     {
         Success = true;
@@ -23,8 +20,7 @@ public class SuccessCommandResult : GenericCommandResult
 
 public class SuccessCommandResult<TData> : GenericCommandResult<TData>
 {
-    [JsonIgnore] public new IEnumerable<ErrorItem>? Errors { get; set; }
-
+    public TData? Data { get; set; }
 
     public SuccessCommandResult(int statusCode = 200)
     {
