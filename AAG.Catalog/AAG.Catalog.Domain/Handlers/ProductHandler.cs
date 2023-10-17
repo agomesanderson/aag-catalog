@@ -63,12 +63,12 @@ public class ProductHandler
         var foundCategory = await _categoryRepository.Get(command.CategoryId);
 
         if (foundCategory is null)
-            return new FailureCommandResult<ProductCommandResult>("Cagoria não localizada");
+            return new FailureCommandResult<ProductCommandResult>("Cagoria não localizada", 404);
 
         var foundProduct = await _productRepository.Get(id);
 
         if (foundProduct is null)
-            return new FailureCommandResult<ProductCommandResult>("Cagoria não localizada");
+            return new FailureCommandResult<ProductCommandResult>("Cagoria não localizada", 404);
 
         var product = Product.Update(command, id);
 
@@ -85,7 +85,7 @@ public class ProductHandler
         var foundProduct = await _productRepository.Get(id);
 
         if (foundProduct is null)
-            return new FailureCommandResult<CategoryCommandResult>("Produto não localizado");
+            return new FailureCommandResult<CategoryCommandResult>("Produto não localizado", 404);
 
         await _productRepository.Delete(id);
         

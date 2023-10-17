@@ -55,7 +55,7 @@ public class CategoryHandler
         var foundCategory = await _categoryRepository.Get(id);
 
         if (foundCategory is null)
-            return new FailureCommandResult<CategoryCommandResult>("Categoria não localizada");
+            return new FailureCommandResult<CategoryCommandResult>("Categoria não localizada", 404);
 
         var category = Category.Update(command, id);
 
@@ -72,7 +72,7 @@ public class CategoryHandler
         var foundCategory = await _categoryRepository.Get(id);
 
         if (foundCategory is null)
-            return new FailureCommandResult<CategoryCommandResult>("Categoria não localizada");
+            return new FailureCommandResult<CategoryCommandResult>("Categoria não localizada", 404);
 
         var hasCategoryWithProducts = await _productRepository.GetByCatetoryId(id);
 
