@@ -1,5 +1,4 @@
-﻿using AAG.Catalog.Domain.Commands.Input.Categories.Validation;
-using AAG.Catalog.Domain.Commands.Input.Products;
+﻿using AAG.Catalog.Domain.Commands.Input.Products;
 using AAG.Catalog.Domain.Commands.Input.Products.Validation;
 using AAG.Catalog.Domain.Commands.Output.Base;
 using AAG.Catalog.Domain.Commands.Output.Categories;
@@ -7,8 +6,6 @@ using AAG.Catalog.Domain.Commands.Output.Products;
 using AAG.Catalog.Domain.Entities;
 using AAG.Catalog.Domain.Repositories;
 using AAG.Catalog.Infra.Common;
-using AAG.Catalog.Infra.Common.Contracts;
-using FluentValidation;
 
 namespace AAG.Catalog.Domain.Handlers;
 
@@ -42,7 +39,7 @@ public class ProductHandler
         var product = Product.Create(command);
 
         await _productRepository.Insert(product);
-        
+
         return new SuccessCommandResult<ProductCommandResult>(new ProductCommandResult { Id = product.Id }, "Produto criado com sucesso", 201);
     }
 
@@ -88,7 +85,7 @@ public class ProductHandler
             return new FailureCommandResult<CategoryCommandResult>("Produto não localizado", 404);
 
         await _productRepository.Delete(id);
-        
+
         return new SuccessCommandResult("Produto removido com sucesso", 204);
     }
 }

@@ -5,7 +5,6 @@ using AAG.Catalog.Domain.Commands.Output.Categories;
 using AAG.Catalog.Domain.Entities;
 using AAG.Catalog.Domain.Repositories;
 using AAG.Catalog.Infra.Common;
-using AAG.Catalog.Infra.Common.Contracts;
 
 namespace AAG.Catalog.Domain.Handlers;
 
