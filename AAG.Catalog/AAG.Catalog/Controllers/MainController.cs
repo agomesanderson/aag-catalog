@@ -1,5 +1,4 @@
-﻿using AAG.Catalog.Infra.Common;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace AAG.Catalog.Controllers
 {
@@ -7,27 +6,43 @@ namespace AAG.Catalog.Controllers
     public class MainController : ControllerBase
     {
         [NonAction]
-        public IActionResult CustomResponse(GenericCommandResult result)
+        public IActionResult CustomResponse(dynamic result)
         {
             if (result is null)
-            {
                 return NotFound(result);
-            }
 
             if (result.StatusCode < 0)
             {
                 if (result.Success)
-                {
                     return Ok(result);
-                }
 
                 return BadRequest(result);
+            }
+
+
+            if (result.Success)
+            {
+                return new ObjectResult(result)
+                {
+                    StatusCode = result.StatusCode,
+                    Value = new
+                    {
+                        result.Success,
+                        result.Message,
+                        result.Data
+                    }
+                };
             }
 
             return new ObjectResult(result)
             {
                 StatusCode = result.StatusCode,
-                Value = result
+                Value = new
+                {
+                    result.Success,
+                    result.Message,
+                    result.Errors
+                }
             };
         }
     }

@@ -45,8 +45,8 @@ public class ProductController : MainController
 
         if (data is null)
             return CustomResponse(new FailureCommandResult<ProductQueryResult>("Não há registros", 404));
-        else
-            return CustomResponse(new SuccessCommandResult<ProductQueryResult>(data, "Consulta realizada com sucesso", 200));
+        
+        return CustomResponse(new SuccessCommandResult<ProductQueryResult>(data, "Consulta realizada com sucesso", 200));
     }
 
     /// <summary>
@@ -64,8 +64,8 @@ public class ProductController : MainController
 
         if (data is null)
             return CustomResponse(new FailureCommandResult<List<ProductQueryResult>>("Não há registros", 404));
-        else
-            return CustomResponse(new SuccessCommandResult<List<ProductQueryResult>>(data, "Consulta realizada com sucesso", 200));
+        
+        return CustomResponse(new SuccessCommandResult<List<ProductQueryResult>>(data, "Consulta realizada com sucesso", 200));
     }
 
     /// <summary>
@@ -82,8 +82,8 @@ public class ProductController : MainController
 
         if (data is null)
             return CustomResponse(new FailureCommandResult<List<ProductQueryResult>>("Não há registros", 404));
-        else
-            return CustomResponse(new SuccessCommandResult<List<ProductQueryResult>>(data, "Consulta realizada com sucesso", 200));
+        
+        return CustomResponse(new SuccessCommandResult<List<ProductQueryResult>>(data, "Consulta realizada com sucesso", 200));
     }
 
     /// <summary>

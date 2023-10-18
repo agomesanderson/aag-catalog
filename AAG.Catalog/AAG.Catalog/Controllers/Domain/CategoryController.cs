@@ -46,8 +46,8 @@ public class CategoryController : MainController
 
         if (data is null)
             return CustomResponse(new FailureCommandResult<CategoryQueryResult>("Não há registros", 404));
-        else
-            return CustomResponse(new SuccessCommandResult<CategoryQueryResult>(data, "Consulta realizada com sucesso", 200));
+        
+        return CustomResponse(new SuccessCommandResult<CategoryQueryResult>(data, "Consulta realizada com sucesso", 200));
     }
 
     /// <summary>
@@ -65,8 +65,8 @@ public class CategoryController : MainController
 
         if (data is null)
             return CustomResponse(new FailureCommandResult<List<CategoryQueryResult>>("Não há registros", 404));
-        else
-            return CustomResponse(new SuccessCommandResult<List<CategoryQueryResult>>(data, "Consulta realizada com sucesso", 200));
+        
+        return CustomResponse(new SuccessCommandResult<List<CategoryQueryResult>>(data, "Consulta realizada com sucesso", 200));
     }
 
     /// <summary>
