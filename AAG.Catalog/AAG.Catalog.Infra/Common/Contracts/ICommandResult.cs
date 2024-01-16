@@ -9,4 +9,6 @@ public interface ICommandResult
 
 public interface ICommandResult<TData> : ICommandResult
 {
+    public TData? Data { get; set; }
+    public IEnumerable<ErrorItem>? Errors { get; set; }
 }

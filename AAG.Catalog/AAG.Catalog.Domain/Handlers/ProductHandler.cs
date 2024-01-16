@@ -28,7 +28,7 @@ public class ProductHandler
         if (!validationResult.IsValid)
         {
             var errors = validationResult.Errors.Select(e => new ErrorItem(e.ErrorCode, e.ErrorMessage));
-            return new FailureCommandResult<ProductCommandResult>("Produto inválido", errors);
+            return new FailureCommandResult<ProductCommandResult>(errors, "Produto inválido");
         }
 
         var foundCategory = await _categoryRepository.Get(command.CategoryId);
@@ -51,7 +51,7 @@ public class ProductHandler
         if (!validationResult.IsValid)
         {
             var errors = validationResult.Errors.Select(e => new ErrorItem(e.ErrorCode, e.ErrorMessage));
-            return new FailureCommandResult<ProductCommandResult>("Produto inválido", errors);
+            return new FailureCommandResult<ProductCommandResult>(errors, "Produto inválido");
         }
 
         if (id is null)

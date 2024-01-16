@@ -24,7 +24,6 @@ public class FailureCommandResult : GenericCommandResult
         Message = message;
         Success = false;
         StatusCode = statusCode;
-
         Errors = new List<ErrorItem>
         {
             error
@@ -42,14 +41,12 @@ public class FailureCommandResult : GenericCommandResult
 
 public class FailureCommandResult<TData> : GenericCommandResult<TData>
 {
-    public IEnumerable<ErrorItem>? Errors { get; set; }
-
     public FailureCommandResult()
     {
         Success = false;
     }
 
-    public FailureCommandResult(string message, IEnumerable<ErrorItem> errors, int statusCode = 422)
+    public FailureCommandResult(IEnumerable<ErrorItem> errors, string message, int statusCode = 422)
     {
         Message = message;
         Success = false;
@@ -57,7 +54,7 @@ public class FailureCommandResult<TData> : GenericCommandResult<TData>
         StatusCode = statusCode;
     }
 
-    public FailureCommandResult(string message, ErrorItem error, int statusCode = 422)
+    public FailureCommandResult(ErrorItem error, string message, int statusCode = 422)
     {
         Message = message;
         Success = false;

@@ -20,8 +20,6 @@ public class SuccessCommandResult : GenericCommandResult
 
 public class SuccessCommandResult<TData> : GenericCommandResult<TData>
 {
-    public TData? Data { get; set; }
-
     public SuccessCommandResult(int statusCode = 200)
     {
         Success = true;

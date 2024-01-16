@@ -27,7 +27,7 @@ public class CategoryHandler
         if (!validationResult.IsValid)
         {
             var errors = validationResult.Errors.Select(e => new ErrorItem(e.ErrorCode, e.ErrorMessage));
-            return new FailureCommandResult<CategoryCommandResult>("Categoria inválida", errors);
+            return new FailureCommandResult<CategoryCommandResult>(errors, "Categoria inválida");
         }
 
         var category = Category.Create(command);
@@ -45,7 +45,7 @@ public class CategoryHandler
         if (!validationResult.IsValid)
         {
             var errors = validationResult.Errors.Select(e => new ErrorItem(e.ErrorCode, e.ErrorMessage));
-            return new FailureCommandResult<CategoryCommandResult>("Categoria inválida", errors);
+            return new FailureCommandResult<CategoryCommandResult>(errors, "Categoria inválida");
         }
 
         if (id is null)

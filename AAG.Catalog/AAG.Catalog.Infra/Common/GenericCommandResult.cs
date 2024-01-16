@@ -11,4 +11,6 @@ public abstract class GenericCommandResult : ICommandResult
 
 public abstract class GenericCommandResult<TData> : GenericCommandResult, ICommandResult<TData>
 {
+    public TData? Data { get; set; }
+    public IEnumerable<ErrorItem>? Errors { get; set; }
 }
