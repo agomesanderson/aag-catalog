@@ -22,19 +22,24 @@ public class ProductHandler
 
     public async Task<GenericCommandResult<ProductCommandResult>> Handle(CreateProductCommand command)
     {
-        var validator = new CreateProductCommandValidation();
-        var validationResult = validator.Validate(command);
+        //var validator = new CreateProductCommandValidation();
+        //var validationResult = validator.Validate(command);
 
-        if (!validationResult.IsValid)
-        {
-            var errors = validationResult.Errors.Select(e => new ErrorItem(e.ErrorCode, e.ErrorMessage));
-            return new FailureCommandResult<ProductCommandResult>(errors, "Produto inválido");
-        }
+        //if (!validationResult.IsValid)
+        //{
+        //    var errors = validationResult.Errors.Select(e => new ErrorItem(e.ErrorCode, e.ErrorMessage));
+        //    return new FailureCommandResult<ProductCommandResult>(errors, "Produto inválido");
+        //}
 
-        var foundCategory = await _categoryRepository.Get(command.CategoryId);
+        //var foundCategory = await _categoryRepository.Get(command.CategoryId);
 
-        if (foundCategory is null)
-            return new FailureCommandResult<ProductCommandResult>("Cagoria não localizada");
+        //if (foundCategory is null)
+        //    return new FailureCommandResult<ProductCommandResult>("Cagoria não localizada");
+
+        var validator = CreateProductCommandValidation.Validate(command, _categoryRepository); //command.Validate(_categoryRepository);
+
+        if (!validator.IsValid)
+            return new FailureCommandResult<ProductCommandResult>(validator.Errors!, "Produto inválido");
 
         var product = Product.Create(command);
 
