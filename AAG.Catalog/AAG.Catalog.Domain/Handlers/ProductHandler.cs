@@ -36,7 +36,7 @@ public class ProductHandler
         //if (foundCategory is null)
         //    return new FailureCommandResult<ProductCommandResult>("Cagoria não localizada");
 
-        var validator = CreateProductCommandValidation.Validate(command, _categoryRepository); //command.Validate(_categoryRepository);
+        var validator = CreateProductCommandValidate.Validate(command, _categoryRepository); //command.Validate(_categoryRepository);
 
         if (!validator.IsValid)
             return new FailureCommandResult<ProductCommandResult>(validator.Errors!, "Produto inválido");
