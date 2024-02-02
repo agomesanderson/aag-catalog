@@ -5,6 +5,7 @@ using AAG.Catalog.Domain.Commands.Output.Categories;
 using AAG.Catalog.Domain.Commands.Output.Products;
 using AAG.Catalog.Domain.Entities;
 using AAG.Catalog.Domain.Repositories;
+using AAG.Catalog.Domain.Validation;
 using AAG.Catalog.Infra.Common;
 
 namespace AAG.Catalog.Domain.Handlers;
@@ -20,7 +21,7 @@ public class ProductHandler
         _productRepository = productRepository;
     }
 
-    public async Task<GenericCommandResult<ProductCommandResult>> Handle(CreateProductCommand command)
+    public async Task<GenericResult> Handle(CreateProductCommand command)
     {
         //var validator = new CreateProductCommandValidation();
         //var validationResult = validator.Validate(command);
@@ -36,16 +37,38 @@ public class ProductHandler
         //if (foundCategory is null)
         //    return new FailureCommandResult<ProductCommandResult>("Cagoria não localizada");
 
-        var validator = CreateProductCommandValidate.Validate(command, _categoryRepository); //command.Validate(_categoryRepository);
+        //*****
+        // PROPOSTA
+        var newValidator = new ValidateProduct(_categoryRepository);
 
-        if (!validator.IsValid)
-            return new FailureCommandResult<ProductCommandResult>(validator.Errors!, "Produto inválido");
+        var resultCommand = newValidator.ValidationInput(command);
+        if (resultCommand.Success)
+        {
+            var resultData = newValidator.ValidationData(command);
+            if (!resultData.Success)
+                return new GenericResult(422, resultCommand.Message);            
+        }
+        else
+            return new GenericResult(422, resultCommand.Message);
 
         var product = Product.Create(command);
 
         await _productRepository.Insert(product);
 
-        return new SuccessCommandResult<ProductCommandResult>(new ProductCommandResult { Id = product.Id }, "Produto criado com sucesso", 201);
+        return new GenericResult(201);
+
+        //*****
+
+        //var validator = CreateProductCommandValidate.Validate(command, _categoryRepository); //command.Validate(_categoryRepository);
+
+        //if (!validator.IsValid)
+        //    return new FailureCommandResult<ProductCommandResult>(validator.Errors!, "Produto inválido");
+
+        //var product = Product.Create(command);
+
+        //await _productRepository.Insert(product);
+
+        //return new SuccessCommandResult<ProductCommandResult>(new ProductCommandResult { Id = product.Id }, "Produto criado com sucesso", 201);
     }
 
     public async Task<GenericCommandResult<ProductCommandResult>> Handle(UpdateProductCommand command, string id)

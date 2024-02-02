@@ -14,3 +14,5 @@ public abstract class GenericCommandResult<TData> : GenericCommandResult, IComma
     public TData? Data { get; set; }
     public IEnumerable<ErrorItem>? Errors { get; set; }
 }
+
+public readonly record struct GenericResult(int StatusCode, string? Message = "");
